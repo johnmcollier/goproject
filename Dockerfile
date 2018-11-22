@@ -4,7 +4,6 @@ FROM golang:latest
 RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
 
 # Copy the project over to the container's Gopath
-RUN mkdir -p $GOPATH/goproject 
 ADD . $GOPATH/src/goproject 
 WORKDIR $GOPATH/src/goproject 
 
