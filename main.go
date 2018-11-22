@@ -19,8 +19,9 @@ func respond(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", respond)
-	http.HandleFunc("/", respond)
-	http.HandleFunc("/hello", hello.SayHello)
+	r.HandleFunc("/hello", hello.SayHello)
+	http.Handle("/", r)
+
 	fmt.Printf("main.go: Go app listening on port 8000\n")
 	http.ListenAndServe(":8000", nil)
 }
