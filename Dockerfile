@@ -10,6 +10,6 @@ WORKDIR $GOPATH/src/goproject
 # Install dependencies
 RUN dep ensure -v
 
+ENV PORT 8080
 RUN go build -o main . 
 CMD ["/go/src/goproject/main"]
-EXPOSE 8000

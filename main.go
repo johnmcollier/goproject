@@ -2,26 +2,31 @@ package main
 
 import (
 	"fmt"
-	"io"
+	"log"
 	"net/http"
+	"os"
 
 	"goproject/pkg/hello"
-
-	"github.com/gorilla/mux"
 )
 
-// Respond to call on endpoint
-func respond(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "Hello from your Go sample application running in Microclimate!")
-	fmt.Printf("main.go: Go app endpoint response\n")
+func handler(w http.ResponseWriter, r *http.Request) {
+	log.Print("Hello world received a request.")
+	target := os.Getenv("TARGET")
+	if target == "" {
+		target = "World"
+	}
+	fmt.Fprintf(w, "Hello %s!\n", target)
 }
 
 func main() {
-	r := mux.NewRouter()
-	r.HandleFunc("/", respond)
-	r.HandleFunc("/hello", hello.SayHello)
-	http.Handle("/", r)
+	log.Print("Hello world sample started.")
 
-	fmt.Printf("main.go: Go app listening on port 8000\n")
-	http.ListenAndServe(":8000", nil)
+	http.HandleFunc("/", handler)
+	http.HandleFunc("/hello", hello.SayHello)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", port), nil))
 }
