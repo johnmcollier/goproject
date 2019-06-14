@@ -4,7 +4,7 @@ pipeline {
     agent {
     
     kubernetes {        
-      label 'codewind-agent-pod'
+      label 'buildah'
       yaml """
       apiVersion: v1
       kind: Pod
@@ -15,8 +15,6 @@ pipeline {
             command:
             - cat
             tty: true
-            securityContext:
-              privileged: true
             resources:
               limits:
                 memory: "2Gi"
