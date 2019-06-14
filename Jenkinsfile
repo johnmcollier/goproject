@@ -36,22 +36,11 @@ pipeline {
     stages {
 
         stage('Build') {
-            container('buildah') {
-                steps {
-                    script {
-                        println("Starting codewind-eclipse build...")
-                        
-                        def sys_info = sh(script: "uname -a", returnStdout: true).trim()
-                        
-                        println("System information: ${sys_info}")
-                        
-                        sh '''
-                        buildah bud -t test_build .
-                        '''
-                    }
+            steps {
+                container('buildah') {
+                    sh 'buildah bud -t buildtest .'
                 }
             }
-
         }        
     }    
 }
