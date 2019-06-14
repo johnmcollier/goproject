@@ -10,7 +10,7 @@ pipeline {
       kind: Pod
       spec:
       containers:
-          - name: ubuntu
+          - name: buildah
             image: johncollier/buildah
             command:
             - cat
@@ -36,19 +36,22 @@ pipeline {
     stages {
 
         stage('Build') {
-            steps {
-                script {
-
-                    println("Starting codewind-eclipse build...")
+            container('buildah') {
+                steps {
+                    script {
+                        println("Starting codewind-eclipse build...")
                         
-                    def sys_info = sh(script: "uname -a", returnStdout: true).trim()
-                    println("System information: ${sys_info}")
-                    
-                    sh '''
+                        def sys_info = sh(script: "uname -a", returnStdout: true).trim()
+                        
+                        println("System information: ${sys_info}")
+                        
+                        sh '''
                         buildah bud -t test_build .
-                    '''
+                        '''
+                    }
                 }
             }
+
         }        
     }    
 }
